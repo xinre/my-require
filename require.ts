@@ -17,3 +17,5 @@ function Require (filePath: string): void {
   let absolutePath = path.resolve(__dirname, filePath)
   let module = new Module(filePath)
 }
+
+let result = Require('./test.js')
