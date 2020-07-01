@@ -12,7 +12,7 @@ interface ModuledDefinition<T> {
 }
 
 const wrapper: string[] = [
-  '(function(exports,module,require,__dirname,__filename){'
+  '(function(module){'
   ,   
   '})'
 ]
@@ -26,11 +26,11 @@ class Module implements ModuledDefinition<() => void> {
       const script = fs.readFileSync(this.path, 'utf8') // 读取
       const functStr = wrapper[0] + script + wrapper[1] // 包裹
       const fn = vm.runInThisContext(functStr)    // 转化为函数 这个是怎样把字符串转化为函数的？
+      fn(this)
     },
     json: () => {
       const script = fs.readFileSync(this.path, 'utf8') // 读取
       this.exports = JSON.parse(script)
-      console.log(JSON.parse(script), '666')
     }
   }
 
@@ -49,4 +49,4 @@ function Require (filePath: string) {
   return module.exports
 }
 
-let result = Require('./test.json')
+let result = Require('./test.js')

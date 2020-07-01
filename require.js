@@ -2,7 +2,7 @@ var path = require('path');
 var fs = require('fs');
 var vm = require('vm');
 var wrapper = [
-    '(function(exports,module,require,__dirname,__filename){',
+    '(function(module){',
     '})'
 ];
 var Module = /** @class */ (function () {
@@ -13,12 +13,12 @@ var Module = /** @class */ (function () {
                 var script = fs.readFileSync(_this.path, 'utf8'); // 读取
                 var functStr = wrapper[0] + script + wrapper[1]; // 包裹
                 var fn = vm.runInThisContext(functStr); // 转化为函数 这个是怎样把字符串转化为函数的？
-                console.log(fn());
+                fn(_this);
+                console.log(_this.exports, '5655656');
             },
             json: function () {
                 var script = fs.readFileSync(_this.path, 'utf8'); // 读取
                 _this.exports = JSON.parse(script);
-                console.log(JSON.parse(script), '666');
             }
         };
         this.path = outId;
@@ -35,4 +35,4 @@ function Require(filePath) {
     module.load();
     return module.exports;
 }
-var result = Require('./test.json');
+var result = Require('./test.js');
